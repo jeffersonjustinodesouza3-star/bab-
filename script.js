@@ -1,3 +1,4 @@
+/* eslint-env browser */
 // ===============================================
 // CONFIGURAÇÃO DO SEU WHATSAPP
 // Troque pelo seu número com DDD (ex: 5511987654321)
@@ -91,7 +92,7 @@ function renderizarBabas(lista) {
   const container = document.getElementById("babas-container");
   if (!container) return;
 
-  if (lista.length === 0) {
+  if (!lista || lista.length === 0) {
     container.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #718096;">
         <p style="font-size: 1.2rem;">Nenhuma babá encontrada com esses filtros.</p>
@@ -104,7 +105,7 @@ function renderizarBabas(lista) {
   container.innerHTML = lista.map(baba => `
     <div class="baba-card">
       <div class="baba-img-wrapper">
-        <img src="${baba.foto}" alt="${baba.nome}" class="baba-img">
+        <img src="${baba.foto}" alt="${baba.nome}" class="baba-img" loading="lazy">
         <span class="baba-verificado-badge">✓ Verificada</span>
         <div class="baba-price-tag">R$ ${baba.precoHora}/h</div>
       </div>
@@ -135,22 +136,31 @@ function renderizarBabas(lista) {
 // FILTROS DE BUSCA
 // ===============================================
 function filtrarBabas() {
-  const cidade = document.getElementById("filtro-cidade").value.toLowerCase().trim();
-  const preco = document.getElementById("filtro-preco").value;
+  const inputCidade = document.getElementById("filtro-cidade");
+  const selectPreco = document.getElementById("filtro-preco");
+
+  const cidade = inputCidade ? inputCidade.value.toLowerCase().trim() : "";
+  const preco = selectPreco ? selectPreco.value : "todos";
 
   const filtradas = babas.filter(baba => {
     const matchCidade = !cidade || baba.bairro.toLowerCase().includes(cidade);
-    const matchPreco = preco === "todos" || baba.precoHora <= parseInt(preco);
+    const matchPreco = preco === "todos" || baba.precoHora <= parseInt(preco, 10);
     return matchCidade && matchPreco;
   });
 
   renderizarBabas(filtradas);
-  document.getElementById("babas").scrollIntoView({ behavior: "smooth" });
+
+  const secaoBabas = document.getElementById("babas");
+  if (secaoBabas) {
+    secaoBabas.scrollIntoView({ behavior: "smooth" });
+  }
 }
 
 function filtrarPorTag(tag, botao) {
   document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
-  botao.classList.add("active");
+  if (botao) {
+    botao.classList.add("active");
+  }
 
   if (tag === "todos") {
     renderizarBabas(babas);
@@ -161,8 +171,12 @@ function filtrarPorTag(tag, botao) {
 }
 
 function resetarFiltros() {
-  document.getElementById("filtro-cidade").value = "";
-  document.getElementById("filtro-preco").value = "todos";
+  const inputCidade = document.getElementById("filtro-cidade");
+  const selectPreco = document.getElementById("filtro-preco");
+
+  if (inputCidade) inputCidade.value = "";
+  if (selectPreco) selectPreco.value = "todos";
+
   renderizarBabas(babas);
 }
 
@@ -181,12 +195,24 @@ function inicializarCalculadora() {
 }
 
 function atualizarCalculo() {
-  const babaId = parseInt(document.getElementById("calc-baba").value);
-  const horas = parseInt(document.getElementById("calc-horas").value);
-  const extraCrianca = document.getElementById("calc-extra-crianca").checked;
-  const fimSemana = document.getElementById("calc-fim-semana").checked;
+  const selectBaba = document.getElementById("calc-baba");
+  const inputHoras = document.getElementById("calc-horas");
+  const checkExtra = document.getElementById("calc-extra-crianca");
+  const checkFds = document.getElementById("calc-fim-semana");
+  const labelHoras = document.getElementById("calc-horas-label");
+  const resultado = document.getElementById("calc-resultado");
+  const detalhe = document.getElementById("calc-detalhe");
 
-  document.getElementById("calc-horas-label").textContent = `${horas} horas`;
+  if (!selectBaba || !inputHoras) return;
+
+  const babaId = parseInt(selectBaba.value, 10) || 1;
+  const horas = parseInt(inputHoras.value, 10) || 4;
+  const extraCrianca = checkExtra ? checkExtra.checked : false;
+  const fimSemana = checkFds ? checkFds.checked : false;
+
+  if (labelHoras) {
+    labelHoras.textContent = `${horas} horas`;
+  }
 
   const baba = babas.find(b => b.id === babaId) || babas[0];
   let valorHora = baba.precoHora;
@@ -195,15 +221,30 @@ function atualizarCalculo() {
   let total = valorHora * horas;
   if (fimSemana) total += 15;
 
-  document.getElementById("calc-resultado").textContent = `R$ ${total.toFixed(2).replace(".", ",")}`;
-  document.getElementById("calc-detalhe").textContent = `${horas}h com ${baba.nome} ${extraCrianca ? "(+ 1 criança extra)" : ""} ${fimSemana ? "(com taxa de fds)" : ""}`;
+  if (resultado) {
+    resultado.textContent = `R$ ${total.toFixed(2).replace(".", ",")}`;
+  }
+
+  if (detalhe) {
+    detalhe.textContent = `${horas}h com ${baba.nome} ${extraCrianca ? "(+ 1 criança)" : ""} ${fimSemana ? "(com taxa de fds)" : ""}`;
+  }
 }
 
 function agendarViaCalculadora() {
-  const babaId = parseInt(document.getElementById("calc-baba").value);
-  const horas = document.getElementById("calc-horas").value;
-  abrirModalAgendamento(babaId);
-  document.getElementById("ag-duracao").value = `${horas} horas`;
+  const selectBaba = document.getElementById("calc-baba");
+  const inputHoras = document.getElementById("calc-horas");
+
+  if (selectBaba) {
+    const babaId = parseInt(selectBaba.value, 10);
+    abrirModalAgendamento(babaId);
+  }
+
+  if (inputHoras) {
+    const agDuracao = document.getElementById("ag-duracao");
+    if (agDuracao) {
+      agDuracao.value = `${inputHoras.value} horas`;
+    }
+  }
 }
 
 // ===============================================
@@ -211,13 +252,16 @@ function agendarViaCalculadora() {
 // ===============================================
 function fecharModal(idModal) {
   const modal = document.getElementById(idModal);
-  if (modal) modal.classList.remove("ativo");
+  if (modal) {
+    modal.classList.remove("ativo");
+  }
 }
 
 // Fechar ao clicar fora do conteúdo
 window.addEventListener("click", (e) => {
-  if (e.target.classList.contains("modal")) {
-    e.target.classList.remove("ativo");
+  const target = e.target;
+  if (target && target.classList && target.classList.contains("modal")) {
+    target.classList.remove("ativo");
   }
 });
 
@@ -226,10 +270,14 @@ function abrirModalAgendamento(id) {
   if (!babaSelecionada) return;
 
   const sub = document.getElementById("modal-subtitulo");
-  sub.innerHTML = `Solicitando agendamento com <strong>${babaSelecionada.nome}</strong> (R$ ${babaSelecionada.precoHora}/h).`;
+  if (sub) {
+    sub.innerHTML = `Solicitando agendamento com <strong>${babaSelecionada.nome}</strong> (R$ ${babaSelecionada.precoHora}/h).`;
+  }
 
   const modal = document.getElementById("modal-agendamento");
-  modal.classList.add("ativo");
+  if (modal) {
+    modal.classList.add("ativo");
+  }
 }
 
 function abrirModalPerfil(id) {
@@ -237,6 +285,8 @@ function abrirModalPerfil(id) {
   if (!baba) return;
 
   const corpo = document.getElementById("perfil-detalhes-corpo");
+  if (!corpo) return;
+
   corpo.innerHTML = `
     <div class="perfil-modal-header">
       <img src="${baba.foto}" alt="${baba.nome}" class="perfil-modal-avatar">
@@ -269,28 +319,44 @@ function abrirModalPerfil(id) {
     </button>
   `;
 
-  document.getElementById("modal-perfil").classList.add("ativo");
+  const modal = document.getElementById("modal-perfil");
+  if (modal) {
+    modal.classList.add("ativo");
+  }
 }
 
 function abrirModalCadastroBaba() {
-  document.getElementById("modal-cadastro-baba").classList.add("ativo");
+  const modal = document.getElementById("modal-cadastro-baba");
+  if (modal) {
+    modal.classList.add("ativo");
+  }
 }
 
 // ===============================================
 // ENVIO PARA O WHATSAPP
 // ===============================================
 function enviarParaWhatsApp(e) {
-  e.preventDefault();
+  if (e && e.preventDefault) {
+    e.preventDefault();
+  }
 
-  const nome = document.getElementById("ag-nome").value;
-  const bairro = document.getElementById("ag-bairro").value;
-  const data = document.getElementById("ag-data").value;
-  const hora = document.getElementById("ag-hora").value;
-  const duracao = document.getElementById("ag-duracao").value;
-  const criancas = document.getElementById("ag-criancas").value;
-  const obs = document.getElementById("ag-obs").value || "Nenhuma";
+  const inputNome = document.getElementById("ag-nome");
+  const inputBairro = document.getElementById("ag-bairro");
+  const inputData = document.getElementById("ag-data");
+  const inputHora = document.getElementById("ag-hora");
+  const selectDuracao = document.getElementById("ag-duracao");
+  const selectCriancas = document.getElementById("ag-criancas");
+  const textareaObs = document.getElementById("ag-obs");
 
-  const dataFormatada = data.split("-").reverse().join("/");
+  const nome = inputNome ? inputNome.value : "";
+  const bairro = inputBairro ? inputBairro.value : "";
+  const data = inputData ? inputData.value : "";
+  const hora = inputHora ? inputHora.value : "";
+  const duracao = selectDuracao ? selectDuracao.value : "4 horas";
+  const criancas = selectCriancas ? selectCriancas.value : "1 criança";
+  const obs = textareaObs && textareaObs.value ? textareaObs.value : "Nenhuma";
+
+  const dataFormatada = data ? data.split("-").reverse().join("/") : "A combinar";
 
   const texto = `👋 Olá! Gostaria de agendar um atendimento na *BabáConecta*:\n\n` +
     `👤 *Cliente:* ${nome}\n` +
@@ -306,18 +372,30 @@ function enviarParaWhatsApp(e) {
   window.open(link, "_blank");
 
   fecharModal("modal-agendamento");
-  document.getElementById("form-agendamento").reset();
+  const form = document.getElementById("form-agendamento");
+  if (form) {
+    form.reset();
+  }
 }
 
 function enviarCandidatura(e) {
-  e.preventDefault();
+  if (e && e.preventDefault) {
+    e.preventDefault();
+  }
 
-  const nome = document.getElementById("cad-nome").value;
-  const tel = document.getElementById("cad-tel").value;
-  const cidade = document.getElementById("cad-cidade").value;
-  const preco = document.getElementById("cad-preco").value;
-  const exp = document.getElementById("cad-exp").value;
-  const bio = document.getElementById("cad-bio").value;
+  const inputNome = document.getElementById("cad-nome");
+  const inputTel = document.getElementById("cad-tel");
+  const inputCidade = document.getElementById("cad-cidade");
+  const inputPreco = document.getElementById("cad-preco");
+  const selectExp = document.getElementById("cad-exp");
+  const textareaBio = document.getElementById("cad-bio");
+
+  const nome = inputNome ? inputNome.value : "";
+  const tel = inputTel ? inputTel.value : "";
+  const cidade = inputCidade ? inputCidade.value : "";
+  const preco = inputPreco ? inputPreco.value : "";
+  const exp = selectExp ? selectExp.value : "";
+  const bio = textareaBio ? textareaBio.value : "";
 
   const selecionados = Array.from(document.querySelectorAll(".cad-habilidade:checked")).map(c => c.value);
   const habilidades = selecionados.length > 0 ? selecionados.join(", ") : "Geral";
@@ -336,19 +414,39 @@ function enviarCandidatura(e) {
   window.open(link, "_blank");
 
   fecharModal("modal-cadastro-baba");
-  document.getElementById("form-cadastro-baba").reset();
+  const form = document.getElementById("form-cadastro-baba");
+  if (form) {
+    form.reset();
+  }
 }
 
 // ===============================================
 // FAQ ACCORDION
 // ===============================================
 function toggleFaq(elemento) {
+  if (!elemento) return;
   const aberto = elemento.classList.contains("aberto");
   document.querySelectorAll(".faq-item").forEach(item => item.classList.remove("aberto"));
   if (!aberto) {
     elemento.classList.add("aberto");
   }
 }
+
+// ===============================================
+// EXPORTAÇÃO GLOBAL (EVITA AVISOS DE NÃO UTILIZADO NO VS CODE)
+// ===============================================
+window.filtrarBabas = filtrarBabas;
+window.filtrarPorTag = filtrarPorTag;
+window.resetarFiltros = resetarFiltros;
+window.atualizarCalculo = atualizarCalculo;
+window.agendarViaCalculadora = agendarViaCalculadora;
+window.fecharModal = fecharModal;
+window.abrirModalAgendamento = abrirModalAgendamento;
+window.abrirModalPerfil = abrirModalPerfil;
+window.abrirModalCadastroBaba = abrirModalCadastroBaba;
+window.enviarParaWhatsApp = enviarParaWhatsApp;
+window.enviarCandidatura = enviarCandidatura;
+window.toggleFaq = toggleFaq;
 
 // ===============================================
 // INICIALIZAÇÃO
