@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BabáConecta - Cuidado e Confiança para sua Família</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Barra de Navegação -->
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="#" class="logo">
+        <span class="logo-icon">🍼</span>
+        <span class="logo-text">Babá<strong>Conecta</strong></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#inicio">Início</a>
+        <a href="#babas">Encontrar Babá</a>
+        <a href="#como-funciona">Como Funciona</a>
+        <a href="#beneficios">Vantagens</a>
+        <a href="#depoimentos">Depoimentos</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-outline" onclick="alert('Cadastro de babás em breve!')">Cadastrar Babá</button>
+        <a href="#babas" class="btn btn-primary">Contratar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Seção Hero / Destaque -->
+  <section id="inicio" class="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <span class="badge">🛡️ Babás 100% Verificadas</span>
+        <h1>Cuidado, carinho e segurança para quem você mais ama</h1>
+        <p>Encontre babás de confiança na sua região com checagem de antecedentes, qualificações em primeiros socorros e avaliações de outros pais.</p>
+        
+        <!-- Barra de Busca Rápida -->
+        <div class="search-box">
+          <div class="input-group">
+            <label>📍 Bairro ou Cidade</label>
+            <input type="text" id="filtro-cidade" placeholder="Ex: Centro, Jardins, Copacabana...">
+          </div>
+          <div class="input-group">
+            <label>💰 Preço Máximo</label>
+            <select id="filtro-preco">
+              <option value="todos">Qualquer valor</option>
+              <option value="35">Até R$ 35/h</option>
+              <option value="45">Até R$ 45/h</option>
+              <option value="60">Até R$ 60/h</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-search" onclick="filtrarBabas()">
+            🔍 Buscar
+          </button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-card-float">
+          <span>⭐ 4.9 de avaliação média das famílias</span>
+        </div>
+        <img src="https://images.unsplash.com/photo-1581952976147-5a2d15560349?auto=format&fit=crop&w=700&q=80" alt="Babá cuidando de criança feliz" class="img-hero">
+      </div>
+    </div>
+  </section>
+
+  <!-- Vantagens / Benefícios -->
+  <section id="beneficios" class="features">
+    <div class="container">
+      <h2 class="section-title">Por que escolher a BabáConecta?</h2>
+      <p class="section-subtitle">Sua tranquilidade e a segurança do seu filho são nossa prioridade absoluta.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Antecedentes Checados</h3>
+          <p>Todas as profissionais passam por checagem criteriosa de documentos e certidões criminais.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🩺</div>
+          <h3>Primeiros Socorros</h3>
+          <p>Priorizamos babás com capacitação pediátrica e cursos atualizados de primeiros socorros.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Avaliações Transparentes</h3>
+          <p>Veja comentários e notas reais dados por outras famílias que já contrataram a profissional.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Agendamento Fácil</h3>
+          <p>Reserve por hora, período integral, finais de semana ou emergências com poucos cliques.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lista de Babás em Destaque -->
+  <section id="babas" class="babysitters">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Babás Disponíveis</h2>
+          <p class="section-subtitle">Profissionais prontas para cuidar do seu filho com dedicação.</p>
+        </div>
+        <div class="filter-pills">
+          <button class="pill active" onclick="filtrarPorTag('todos', this)">Todas</button>
+          <button class="pill" onclick="filtrarPorTag('Pedagogia', this)">Pedagogia</button>
+          <button class="pill" onclick="filtrarPorTag('Primeiros Socorros', this)">Primeiros Socorros</button>
+          <button class="pill" onclick="filtrarPorTag('Bebês', this)">Bebês</button>
+        </div>
+      </div>
+
+      <div class="babysitter-cards" id="babas-container">
+        <!-- Inserido dinamicamente via JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Como Funciona -->
+  <section id="como-funciona" class="how-it-works">
+    <div class="container">
+      <h2 class="section-title">Como funciona</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-number">1</span>
+          <h3>Pesquise</h3>
+          <p>Encontre os perfis disponíveis na sua região de acordo com os horários que você precisa.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">2</span>
+          <h3>Escolha a Babá</h3>
+          <p>Veja experiência, especialidades, fotos, valores e opiniões de outras mães e pais.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">3</span>
+          <h3>Agende com Segurança</h3>
+          <p>Envie sua solicitação e combine os detalhes com total tranquilidade e suporte.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Depoimentos -->
+  <section id="depoimentos" class="testimonials">
+    <div class="container">
+      <h2 class="section-title">Depoimentos de Famílias</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <p>"A Mariana cuidou do nosso filho de 2 anos com um carinho ímpar! Super atenciosa e pontual. Recomendo muito!"</p>
+          <div class="user-info">
+            <strong>Camila & Rodrigo</strong>
+            <span>Pais do Lucas (São Paulo)</span>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p>"Precisava de alguém com urgência para um sábado e encontrei uma babá com certificação em primeiros socorros em minutos. Sensacional!"</p>
+          <div class="user-info">
+            <strong>Juliana Silva</strong>
+            <span>Mãe da Alice (Rio de Janeiro)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-col">
+        <a href="#" class="logo footer-logo">🍼 Babá<strong>Conecta</strong></a>
+        <p>A plataforma que conecta famílias a babás qualificadas com segurança e muito afeto.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#babas">Encontrar Babá</a></li>
+          <li><a href="#beneficios">Vantagens</a></li>
+          <li><a href="#como-funciona">Como Funciona</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <p>📧 contato@babaconecta.com.br</p>
+        <p>📱 (11) 98765-4321</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 BabáConecta. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Modal de Agendamento -->
+  <div id="modal-agendamento" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="fecharModal()">&times;</button>
+      <h3>Solicitar Agendamento</h3>
+      <p id="modal-subtitulo" class="modal-sub">Você está agendando com a babá selecionada.</p>
+      
+      <form id="form-agendamento" onsubmit="confirmarAgendamento(event)">
+        <div class="form-group">
+          <label>Seu Nome Completo:</label>
+          <input type="text" id="ag-nome" required placeholder="Digite seu nome">
+        </div>
+        <div class="form-group">
+          <label>WhatsApp / Telefone:</label>
+          <input type="tel" id="ag-tel" required placeholder="(11) 99999-9999">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Data:</label>
+            <input type="date" id="ag-data" required>
+          </div>
+          <div class="form-group">
+            <label>Horário Início:</label>
+            <input type="time" id="ag-hora" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Observações (idade das crianças, rotina):</label>
+          <textarea id="ag-obs" rows="3" placeholder="Ex: 1 criança de 3 anos, precisa de ajuda com almoço..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Confirmar Solicitação</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
