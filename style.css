@@ -8,6 +8,8 @@
   --primary: #ff6584;
   --primary-hover: #ff476e;
   --secondary: #6c63ff;
+  --whatsapp: #25d366;
+  --whatsapp-hover: #1ebd5a;
   --bg-light: #faf9fd;
   --text-dark: #2d3748;
   --text-muted: #718096;
@@ -63,7 +65,7 @@ body {
 
 .nav-links {
   display: flex;
-  gap: 24px;
+  gap: 22px;
 }
 
 .nav-links a {
@@ -71,6 +73,7 @@ body {
   color: var(--text-muted);
   font-weight: 500;
   transition: color 0.2s;
+  font-size: 0.95rem;
 }
 
 .nav-links a:hover {
@@ -84,7 +87,9 @@ body {
 
 /* Botões */
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px 22px;
   border-radius: 30px;
   font-weight: 600;
@@ -94,6 +99,7 @@ body {
   transition: all 0.25s ease;
   font-family: inherit;
   font-size: 0.95rem;
+  gap: 6px;
 }
 
 .btn-primary {
@@ -116,6 +122,26 @@ body {
 .btn-outline:hover {
   background: var(--primary);
   color: var(--white);
+}
+
+.btn-whatsapp {
+  background-color: var(--whatsapp);
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+}
+
+.btn-whatsapp:hover {
+  background-color: var(--whatsapp-hover);
+  transform: translateY(-2px);
+}
+
+.btn-secondary-soft {
+  background: #edf2f7;
+  color: #4a5568;
+}
+
+.btn-secondary-soft:hover {
+  background: #e2e8f0;
 }
 
 .btn-block {
@@ -223,7 +249,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* Vantagens */
+/* Diferenciais / Vantagens */
 .features {
   padding: 60px 0;
   background: var(--white);
@@ -298,6 +324,7 @@ body {
 .filter-pills {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .pill {
@@ -320,7 +347,7 @@ body {
 
 .babysitter-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   gap: 30px;
 }
 
@@ -331,16 +358,17 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s;
+  transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .baba-card:hover {
   transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
 }
 
 .baba-img-wrapper {
   position: relative;
-  height: 200px;
+  height: 220px;
 }
 
 .baba-img {
@@ -353,16 +381,29 @@ body {
   position: absolute;
   bottom: 12px;
   right: 12px;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.78);
   color: #fff;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.baba-verificado-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(37, 211, 102, 0.92);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
   font-weight: 600;
-  font-size: 0.9rem;
+  backdrop-filter: blur(4px);
 }
 
 .baba-info {
-  padding: 20px;
+  padding: 22px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -372,7 +413,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .baba-nome {
@@ -395,7 +436,7 @@ body {
 .baba-desc {
   font-size: 0.9rem;
   color: #4a5568;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
   flex-grow: 1;
 }
 
@@ -413,6 +454,106 @@ body {
   padding: 4px 10px;
   border-radius: 8px;
   font-weight: 500;
+}
+
+.baba-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* Calculadora */
+.calculator-section {
+  padding: 60px 0;
+  background: #f4f3fb;
+}
+
+.calculator-box {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: var(--shadow);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.calc-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.calc-badge {
+  background: #ede9fe;
+  color: var(--secondary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  border-radius: 14px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.calc-body {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.calc-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.calc-controls input[type="range"] {
+  width: 100%;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.calc-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+.calc-result-card {
+  background: linear-gradient(135deg, #fff0f3, #f5f3ff);
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid rgba(255, 101, 132, 0.2);
+}
+
+.result-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.result-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 10px 0;
+}
+
+.result-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
 }
 
 /* Como funciona */
@@ -436,8 +577,8 @@ body {
 
 .step-number {
   display: inline-flex;
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   background: var(--primary);
   color: var(--white);
   border-radius: 50%;
@@ -448,9 +589,75 @@ body {
   margin-bottom: 18px;
 }
 
+/* FAQ */
+.faq-section {
+  padding: 70px 0;
+}
+
+.faq-accordion {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.faq-item {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.faq-item:hover {
+  border-color: var(--primary);
+}
+
+.faq-question {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-question h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.faq-toggle {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--primary);
+  transition: transform 0.25s;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 24px;
+  background: #fafafc;
+  color: #4a5568;
+  font-size: 0.95rem;
+}
+
+.faq-item.aberto .faq-answer {
+  max-height: 250px;
+  padding: 16px 24px 24px;
+}
+
+.faq-item.aberto .faq-toggle {
+  transform: rotate(45deg);
+}
+
 /* Depoimentos */
 .testimonials {
   padding: 70px 0;
+  background: var(--white);
 }
 
 .testimonials-grid {
@@ -460,16 +667,21 @@ body {
 }
 
 .testimonial-card {
-  background: var(--white);
+  background: var(--bg-light);
   padding: 30px;
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   border-left: 5px solid var(--primary);
+}
+
+.stars {
+  margin-bottom: 12px;
+  font-size: 1rem;
 }
 
 .testimonial-card p {
   font-style: italic;
   margin-bottom: 16px;
+  color: #334155;
 }
 
 .user-info strong {
@@ -532,7 +744,36 @@ body {
   font-size: 0.85rem;
 }
 
-/* Modal */
+/* Botão Flutuante do WhatsApp */
+.whatsapp-float {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: var(--whatsapp);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 50px;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+  text-decoration: none;
+  z-index: 990;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-icon {
+  font-size: 1.3rem;
+}
+
+/* Modais */
 .modal {
   display: none;
   position: fixed;
@@ -540,9 +781,9 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  z-index: 999;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
   justify-content: center;
   align-items: center;
   padding: 20px;
@@ -555,11 +796,17 @@ body {
 .modal-content {
   background: var(--white);
   width: 100%;
-  max-width: 480px;
-  padding: 30px;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
   border-radius: var(--radius);
   position: relative;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-large {
+  max-width: 650px;
 }
 
 .modal-close {
@@ -580,7 +827,7 @@ body {
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .form-group label {
@@ -591,6 +838,7 @@ body {
 }
 
 .form-group input,
+.form-group select,
 .form-group textarea {
   width: 100%;
   padding: 10px 14px;
@@ -602,8 +850,56 @@ body {
 }
 
 .form-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
+}
+
+.checkbox-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: normal;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+/* Perfil Detalhado no Modal */
+.perfil-modal-header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.perfil-modal-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary);
+}
+
+.perfil-certificacoes {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 10px;
+  margin: 15px 0;
+}
+
+.perfil-certificacoes ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 0.85rem;
 }
 
 /* Responsividade */
@@ -617,8 +913,16 @@ body {
   .hero-text h1 {
     font-size: 2.2rem;
   }
+  .calc-body {
+    grid-template-columns: 1fr;
+  }
   .footer-content {
     grid-template-columns: 1fr;
   }
+  .baba-card-actions {
+    grid-template-columns: 1fr;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
-
